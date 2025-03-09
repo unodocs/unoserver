@@ -1,4 +1,4 @@
-# Unoserver Web
+# Unoserver - API
 
 Web server for converting files using [unoserver](https://github.com/unoconv/unoserver)
 
@@ -6,29 +6,84 @@ Web server for converting files using [unoserver](https://github.com/unoconv/uno
 [![Publish](https://github.com/unodocs/unoserver/actions/workflows/publish.yml/badge.svg)](https://github.com/unodocs/unoserver/actions/workflows/publish.yml)
 [![codecov](https://codecov.io/gh/unodocs/unoserver/graph/badge.svg?token=2LFC0WZCQE)](https://codecov.io/gh/unodocs/unoserver)
 
-Once the container is up and running http://127.0.0:3000 provides a swagger interface.
+unoserver can be considered a headless LibreOffice, it keeps a LibreOffice instance running as a listener and just sends conversion commands.
+This means there is less overhead since LibreOffice doesn't have to "boot" for every conversion.
+
+The goal is to provide a simple API that let's you upload files and specify which format they should be converted to.
 
 This is perfect for local development, or running it on a private network in production.
 
-> There is no authentication available, nor planned, never run this container on a public network
- 
-## Example
+> There is no authentication available, nor planned.
+> Never expose the port of this container to a public network
 
+Once the container is up and running http://127.0.0:3000 provides a swagger interface.
+
+Each [container release](https://hub.docker.com/r/unodocsl/unoserver) that is published comes in 2 flavors:
+- standard: contains the code base, some base fonts, boots LibreOffice and provides the API.
+- fonts: also includes the full set of google fonts, installed on the OS (considerably larger image), releases are suffixed with `-fonts`
+
+## Examples
+
+### Using the latest image
 Using [Dockerhub Image](https://hub.docker.com/r/unodocsl/unoserver):
 
 ```sh
+# Start up the container
 docker run -d -p 3000:3000 unodocsl/unoserver:latest
 
+# Send a file for conversion, the response can be saved as a file
 curl \
---request POST 'http://localhost:3000/convert/pdf' \
+--request POST 'http://127.0.0.1:3000/convert/pdf' \
+--form 'file=@"/path/to/file.docx"' \
+-o my.pdf
+```
+
+### Git
+```sh
+git clone git@github.com:unoconv/unoserver.git
+
+cd unoserver
+
+# Now you have the flexibility to add fonts, define a .env file
+
+# Build & sStart up the container
+docker build --build-arg NODE_ENV=production --tag unoserver:dev .
+docker run -d -e MAX_WORKERS=4 -p 3000:3000 unoserver:dev
+
+# Send a file for conversion, the response can be saved as a file
+curl \
+--request POST 'http://127.0.0.1:3000/convert/pdf' \
 --form 'file=@"/path/to/file.docx"' \
 -o my.pdf
 ```
 
 
-Each release that is published comes in 2 flavors:
-- light: contains the code base, starts unoserver
-- fonts: includes the full set of google fonts, installed on the OS (considerably larger image), release is suffixed with `-fonts`
+## Laravel sail
+
+Register the docker service:
+
+```docker-composer
+    unoserver:
+        image: 'unodocsl/unoserver:latest'
+        ports:
+            - '${FORWARD_UNOSERVER_PORT}:3000'
+        environment:
+            MAX_WORKERS: 3
+            CONVERSION_RETRIES: 3
+            WORKER_JOB_TIMEOUT: 60000
+            MAX_FAILED_STORED: 50
+        networks:
+            - sail
+```
+
+In your `.env` file, define the key:
+
+```dotenv
+FORWARD_UNOSERVER_PORT=3000
+```
+
+From within sail you'll be able to make requests to `unoserver:3000` if you kept the `.env` variable the same.
+Outside of the container you'll be able to access it through `127.0.0.1:3000`.
 
 ## Container Environment variables
 
