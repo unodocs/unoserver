@@ -29,6 +29,19 @@ export interface FailedFileConversion {
 	reason?: string
 }
 
+export interface File {
+	fieldname: string
+	originalname: string
+	encoding: string
+	mimetype: string
+	size?: number
+	destination?: string
+	filename?: string
+	path?: string
+	buffer?: Buffer
+	stream?: NodeJS.ReadableStream
+}
+
 const myPluginCallback: FastifyPluginCallback = (fastify, options, done) => {
 	fastify.decorate('store', new CacheStore(fastify))
 	fastify.decorate('failedConversions', new FailedStore(fastify))

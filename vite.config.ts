@@ -21,7 +21,7 @@ export default defineConfig({
 			all: true,
 			include: ['src/**/*.ts'],
 			reportOnFailure: true,
-			exclude: ['src/tests/*', 'src/index.ts'],
+			exclude: ['src/tests/*', 'src/index.ts', 'src/plugins/supportFilesInSchema.ts'],
 		},
 		reporters: ['default', 'junit'],
 		outputFile: 'test-report.junit.xml',

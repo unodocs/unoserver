@@ -5,3 +5,4 @@ node_modules
 coverage
 .pnpm-store
 .idea
+test-report.junit.xml

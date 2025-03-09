@@ -3,20 +3,7 @@ import path from 'node:path'
 
 import type { FastifyInstance } from 'fastify'
 
-import type { FileConversion } from '../store.js'
-
-interface File {
-	fieldname: string
-	originalname: string
-	encoding: string
-	mimetype: string
-	size?: number
-	destination?: string
-	filename?: string
-	path?: string
-	buffer?: Buffer
-	stream?: NodeJS.ReadableStream
-}
+import type { FileConversion, File } from '../store.js'
 
 export class CacheStore {
 	private cache: Map<string, FileConversion>
