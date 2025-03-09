@@ -15,11 +15,13 @@ jobs:
         with:
           repos: ppa:libreoffice/ppa
           tools: software-properties-common curl python3 python3-pip
+          cache: 'no'
 
       - uses: tecolicom/actions-use-apt-tools@v1
         id: action-libre
         with:
           tools: libreoffice
+          cache: 'no'
 
       - name: Install UnoServer
         run: |

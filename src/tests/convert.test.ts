@@ -12,6 +12,9 @@ const rtfFile = new File([rtfBlob], '1.rtf')
 
 afterAll(async () => testServer.close())
 
+// @todo test timeout handler
+// @todo test request error handler
+
 test('/convert/docx', async () => {
 	const form = new FormData()
 	form.append('file', rtfFile)
