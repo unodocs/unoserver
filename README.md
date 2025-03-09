@@ -57,8 +57,7 @@ curl \
 -o my.pdf
 ```
 
-
-## Laravel sail
+### Laravel sail
 
 Register the docker service:
 
