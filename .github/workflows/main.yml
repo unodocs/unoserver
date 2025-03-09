@@ -1,0 +1,57 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: tecolicom/actions-use-apt-tools@v1
+        id: action
+        with:
+          repos: ppa:libreoffice/ppa
+          tools: software-properties-common curl python3 python3-pip
+          method: timestamp
+          key: unodocs-base
+
+      - uses: tecolicom/actions-use-apt-tools@v1
+        id: action-libre
+        with:
+          tools: --no-install-recommends libreoffice
+          method: timestamp
+          key: unodocs-libre
+
+      - name: Install UnoServer
+        run: |
+          export PIP_BREAK_SYSTEM_PACKAGES=1 && pip install unoserver
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.11
+
+      - name: install pnpm
+        run: |
+          corepack disable && corepack enable
+          npm install -g pnpm@latest-10 --force
+
+      - uses: actions/checkout@v4
+
+      - name: Run tests & build coverage
+        run: pnpm install && pnpm run validate && pnpm run build && pnpm run test:coverage
+
+      - name: Upload coverage reports to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
