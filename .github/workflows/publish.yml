@@ -19,12 +19,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - uses: docker/build-push-action@v6
         with:
-          tags: unodocs/unoserver:${{ steps.package-version.outputs.current-version }},unodocs/unoserver:latest
+          tags: unodocsl/unoserver:${{ steps.package-version.outputs.current-version }},unodocsl/unoserver:latest
           build-args: NODE_ENV=production
           push: true
       - uses: docker/build-push-action@v6
         with:
-          tags: unodocs/unoserver:${{ steps.package-version.outputs.current-version }}-fonts,unodocs/unoserver:latest-fonts
+          tags: unodocsl/unoserver:${{ steps.package-version.outputs.current-version }}-fonts,unodocsl/unoserver:latest-fonts
           build-args: |
             NODE_ENV=production
             GOOGLE_FONTS=1

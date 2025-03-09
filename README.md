@@ -12,10 +12,10 @@ This is perfect for local development, or running it on a private network in pro
 
 ## Example
 
-Using [Dockerhub Image](https://hub.docker.com/r/unodocs/unoserver):
+Using [Dockerhub Image](https://hub.docker.com/r/unodocsl/unoserver):
 
 ```sh
-docker run -d -p 3000:3000 unodocs/unoserver:latest
+docker run -d -p 3000:3000 unodocsl/unoserver:latest
 
 curl \
 --request POST 'http://localhost:3000/convert/pdf' \
