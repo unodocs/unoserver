@@ -19,7 +19,7 @@ jobs:
       - uses: tecolicom/actions-use-apt-tools@v1
         id: action-libre
         with:
-          tools: --no-install-recommends libreoffice
+          tools: libreoffice
 
       - name: Install UnoServer
         run: |
