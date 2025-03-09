@@ -10,6 +10,8 @@ Once the container is up and running http://127.0.0:3000 provides a swagger inte
 
 This is perfect for local development, or running it on a private network in production.
 
+> There is no authentication available, nor planned, never run this container on a public network
+ 
 ## Example
 
 Using [Dockerhub Image](https://hub.docker.com/r/unodocsl/unoserver):
@@ -23,9 +25,12 @@ curl \
 -o my.pdf
 ```
 
-each release has a version with all google fonts, suffixed with`-fonts`
 
-## Container Environment
+Each release that is published comes in 2 flavors:
+- light: contains the code base, starts unoserver
+- fonts: includes the full set of google fonts, installed on the OS (considerably larger image), release is suffixed with `-fonts`
+
+## Container Environment variables
 
 | Variable             | Description                                                                | Default |
 | -------------------- | -------------------------------------------------------------------------- | ------- |
@@ -72,7 +77,7 @@ docker build --build-arg NODE_ENV=production --tag unoserver:dev .
 docker run --rm -p 3000:3000 unoserver:dev
 ```
 
-Optionally you could include all the google fonts (1GB worth of files) into your container
+Optionally you could also include all the google fonts into your container (this increases the image considerably).
 
 ```sh
 docker build --build-arg NODE_ENV=production --build-arg GOOGLE_FONTS=1 --tag unoserver:dev .
@@ -81,4 +86,5 @@ docker run --rm -p 3000:3000 unoserver:dev
 
 ## Thanks
 
-- lynxtaa for the original implementation https://github.com/lynxtaa/unoserver-web
+- lynxtaa: for the [original implementation](https://github.com/lynxtaa/unoserver-web)
+- [Contributers](https://github.com/unodocs/unoserver/graphs/contributors)
