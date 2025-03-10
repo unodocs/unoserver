@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitest/config'
+import path from 'path'
+
 import { codecovVitePlugin } from '@codecov/vite-plugin'
+import { config } from "dotenv";
 
 const isCi = process.env.CI !== undefined
 
@@ -29,6 +32,9 @@ export default defineConfig({
 			escapeString: false,
 			printBasicPrototype: false,
 		},
+		env: {
+			...config({path: path.resolve(__dirname, '.env.test')}).parsed,
+		}
 	},
 	plugins: [
 		codecovVitePlugin({

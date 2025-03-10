@@ -4,9 +4,9 @@ import { LRUCache } from 'lru-cache'
 import type { FileConversion, FailedFileConversion } from '../store.js'
 
 export class FailedStore {
-	private cache: LRUCache<string, FailedFileConversion>
-	private app: FastifyInstance
-	private maxFailed: number
+	protected cache: LRUCache<string, FailedFileConversion>
+	protected app: FastifyInstance
+	protected maxFailed: number
 
 	constructor(fastify: FastifyInstance) {
 		this.maxFailed =
@@ -44,5 +44,13 @@ export class FailedStore {
 
 	values(): FailedFileConversion[] {
 		return [...this.cache.values()]
+	}
+
+	size(): number {
+		return this.cache.size;
+	}
+
+	reset(): void {
+		this.cache.clear();
 	}
 }

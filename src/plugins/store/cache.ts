@@ -6,8 +6,8 @@ import type { FastifyInstance } from 'fastify'
 import type { FileConversion, File } from '../store.js'
 
 export class CacheStore {
-	private cache: Map<string, FileConversion>
-	private app: FastifyInstance
+	protected cache: Map<string, FileConversion>
+	protected app: FastifyInstance
 
 	constructor(fastify: FastifyInstance) {
 		this.cache = new Map()
@@ -42,5 +42,9 @@ export class CacheStore {
 
 	size(): number {
 		return this.cache.size
+	}
+
+	reset(): void {
+		this.cache.clear();
 	}
 }
