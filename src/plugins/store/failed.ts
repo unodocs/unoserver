@@ -47,10 +47,10 @@ export class FailedStore {
 	}
 
 	size(): number {
-		return this.cache.size;
+		return this.cache.size
 	}
 
 	reset(): void {
-		this.cache.clear();
+		this.cache.clear()
 	}
 }

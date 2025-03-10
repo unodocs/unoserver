@@ -45,6 +45,6 @@ export class CacheStore {
 	}
 
 	reset(): void {
-		this.cache.clear();
+		this.cache.clear()
 	}
 }
