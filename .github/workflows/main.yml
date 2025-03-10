@@ -47,7 +47,7 @@ jobs:
         with:
           add: docs/api.json
           author_name: UnoServer bot
-          message: Updated json api spec file
+          message: Updated json api spec file (auto)
 
       - name: Upload coverage reports to Codecov
         if: ${{ !cancelled() }}
