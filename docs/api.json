@@ -1,0 +1,161 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "unoserver",
+		"version": "1.0.0"
+	},
+	"definitions": {},
+	"paths": {
+		"/convert/{format}": {
+			"post": {
+				"summary": "Converts file using LibreOffice",
+				"produces": ["application/octet-stream"],
+				"consumes": ["multipart/form-data"],
+				"parameters": [
+					{
+						"type": "string",
+						"description": "The export filter to use when converting. It is selected automatically if not specified.",
+						"required": false,
+						"in": "query",
+						"name": "filter"
+					},
+					{
+						"type": "file",
+						"required": true,
+						"in": "formData",
+						"name": "file"
+					},
+					{
+						"type": "string",
+						"description": "The file type/extension of the output file (ex pdf)",
+						"required": true,
+						"in": "path",
+						"name": "format"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Default Response",
+						"schema": {
+							"type": "object",
+							"properties": {}
+						}
+					}
+				}
+			}
+		},
+		"/status": {
+			"get": {
+				"summary": "Lists the current load",
+				"produces": ["application/json"],
+				"consumes": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "Default Response",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"queue": {
+									"type": "object",
+									"properties": {
+										"queued": {
+											"type": "integer",
+											"description": "The number of queued items waiting to run."
+										},
+										"running": {
+											"type": "integer",
+											"description": "Number of running items."
+										}
+									}
+								},
+								"workers": {
+									"type": "integer",
+									"description": "Maximum simultaneous workers"
+								},
+								"documents": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"uuid": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"format": {
+												"type": "string",
+												"description": "The format the file will be converted to"
+											},
+											"size": {
+												"type": "integer",
+												"description": "in bytes"
+											},
+											"start": {
+												"type": "string",
+												"description": "date/time string"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/failed": {
+			"get": {
+				"summary": "Lists the last 5 failed conversions",
+				"description": "This is not persisted, so it will be lost when the container restarts.",
+				"produces": ["application/json"],
+				"consumes": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "Default Response",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"errors": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"uuid": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"format": {
+												"type": "string",
+												"description": "The format the file will be converted to"
+											},
+											"size": {
+												"type": "integer",
+												"description": "in bytes"
+											},
+											"start": {
+												"type": "string",
+												"description": "date/time string"
+											},
+											"reason": {
+												"type": "string"
+											},
+											"failedAt": {
+												"type": "string",
+												"description": "date/time string"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"consumes": ["application/json"],
+	"produces": ["application/json"]
+}
