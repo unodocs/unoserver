@@ -29,6 +29,7 @@
 		"@fastify/swagger": "8.14.0",
 		"@fastify/swagger-ui": "2.1.0",
 		"content-disposition": "0.5.4",
+		"dotenv": "16.4.7",
 		"dotenv-safe": "9.1.0",
 		"execa": "9.5.2",
 		"fastify": "4.28.0",
