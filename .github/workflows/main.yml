@@ -42,6 +42,13 @@ jobs:
       - name: Run tests & build coverage
         run: pnpm install && pnpm run validate && pnpm run build && pnpm run test:coverage
 
+      - name: Commit open api spec file
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: docs/api.json
+          author_name: UnoServer bot
+          message: Updated json api spec file
+
       - name: Upload coverage reports to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v5

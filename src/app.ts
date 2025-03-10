@@ -10,6 +10,7 @@ import { type P, pino } from 'pino'
 
 import storePlugin from './plugins/store.js'
 import { transform } from './plugins/supportFilesInSchema.js'
+import writeOpenApiPlugin from './plugins/writeOpenApi.js'
 import { routes } from './routes.js'
 import { unoserver } from './utils/unoserver.js'
 
@@ -70,6 +71,7 @@ export function createApp({
 	fastify.register(cors, { origin: '*', maxAge: 60 * 60 })
 
 	fastify.register(multer.contentParser)
+	fastify.register(writeOpenApiPlugin)
 	fastify.register(storePlugin)
 
 	fastify.register(swagger, {
